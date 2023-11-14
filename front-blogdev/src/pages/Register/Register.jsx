@@ -1,16 +1,16 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
-import { userAuthentication } from '../../hooks/userAuthentication'
+import { useState } from 'react'
+import { userAuthentication } from '../../hooks/userAuthentication' 
 
 const Register = () => {
   //#region Controller Service
   const [displayName, setDisplayName] = useState('')
-  const [email, setEmail] = useState('')
+  const [email, setEmail] =useState('')
   const [password, setPassword] = useState('')
-  const [corfirmedPassword, setCorfirmedPassword] = useState('')
-  const [error, setError] = useState('')
+  const [corfirmedPassword, setCorfirmedPassword] =useState('')
+  const [error, setError] =useState('')
 
-  const { createUser, error: authError, loading } = userAuthentication()
+  const{createUser, error: authError, loading} = userAuthentication()
 
   const handlerSubmit = async (e) => {
     e.preventDefault()
@@ -21,13 +21,13 @@ const Register = () => {
       password
     }
 
-    if (password != corfirmedPassword) {
+    if(password != corfirmedPassword){
       setError('As senhas precisam ser iguais.')
-      return
+      return 
     }
 
     const res = await createUser(user)
-    
+
     console.table(res)
   }
   //#endregion
