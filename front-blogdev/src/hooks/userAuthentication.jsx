@@ -15,6 +15,56 @@ export const userAuthentication = () =>{
 
     const auth = getAuth()
 
+    function checkIfIsCancelled() {
+        if (cancelled) {
+          return;
+        }
+      }
+
+      
+    // const signInWithEmailAndPassword = async (email, password) => {
+    //     try {
+    //       await auth.signInWithEmailAndPassword(
+    //         auth,
+    //          data.email,
+    //           data.password);
+    //     } catch (error) {
+    //       console.error('Erro no login:', error.message);
+    //       throw error;
+    //     }
+    //   };
+
+    async function loginUser(data) {
+        checkIfIsCancelled();
+        setLoading(true);
+        setError(null);
+
+        try {
+            const { user } = await signInWithEmailAndPassword(
+                auth,
+                data.email,
+                data.password
+            );
+            setLoading(false);
+            return user;
+        } catch (error) {
+            console.error(error.message);
+            let systemErrorMessage;
+            if (
+                error.message.includes('There is no user record corresponding to this')
+            ) {
+                systemErrorMessage = 'E-mail não encontrado';
+            } else if (error.message.includes('password is invalid')) {
+                systemErrorMessage = 'Senha inválida';
+            } else {
+                systemErrorMessage = 'Ocorreu um erro, tente novamente mais tarde';
+            }
+
+            setLoading(false);
+            setError(systemErrorMessage);
+        }
+    }
+
     function checkIfIsCancelled(){
         if(cancelled){
             return
@@ -68,6 +118,8 @@ export const userAuthentication = () =>{
         auth,
         createUser,
         error,
-        loading
-    }
-}
+        loading,
+        signInWithEmailAndPassword,
+        loginUser
+      };
+};
